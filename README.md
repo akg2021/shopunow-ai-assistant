@@ -61,6 +61,7 @@ The system handles queries for six ShopUNow departments, covering frequently ask
 - [ ] Multi-language support
 - [ ] Voice input/output
 
+Access the AI Chat Assistant at https://appapppy-bdcjpaqyqulyvtcqk95ik2.streamlit.app/
 
 #########################################################################################################################
 ## Prerequisites
