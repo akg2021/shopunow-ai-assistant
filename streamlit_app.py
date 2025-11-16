@@ -275,7 +275,7 @@ with st.sidebar:
     
     st.markdown("---")
     st.caption("Powered by ShopUNow AI")
-    st.caption("© 2024 ShopUNow Inc.")
+    st.caption("© 2025 ShopUNow Inc.")
 
 # ============================================================================
 # Main Chat Area
@@ -363,55 +363,6 @@ if user_input:
             })
     
     st.rerun()
-
-# ============================================================================
-# Quick Action Buttons
-# ============================================================================
-
-st.markdown("---")
-st.markdown("### Quick Actions")
-
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    if st.button("Browse Products", use_container_width=True):
-        if not initialize_agent():
-            st.stop()
-        st.session_state.chat_history.append({
-            'role': 'user', 
-            'content': 'What products do you have?'
-        })
-        st.rerun()
-
-with col2:
-    if st.button("Track Order", use_container_width=True):
-        if not initialize_agent():
-            st.stop()
-        st.session_state.chat_history.append({
-            'role': 'user', 
-            'content': 'How can I track my order?'
-        })
-        st.rerun()
-
-with col3:
-    if st.button("Billing Help", use_container_width=True):
-        if not initialize_agent():
-            st.stop()
-        st.session_state.chat_history.append({
-            'role': 'user', 
-            'content': 'I have a billing question'
-        })
-        st.rerun()
-
-with col4:
-    if st.button("Get Support", use_container_width=True):
-        if not initialize_agent():
-            st.stop()
-        st.session_state.chat_history.append({
-            'role': 'user', 
-            'content': 'I need help with an issue'
-        })
-        st.rerun()
 
 # ============================================================================
 # Footer
