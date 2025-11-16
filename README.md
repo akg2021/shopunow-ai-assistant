@@ -28,7 +28,7 @@ The system handles queries for six ShopUNow departments, covering frequently ask
     - **Human Escalation**: Negative Sentiment or no response for any departments
 5. **Testing of system with sample queries**
 
-### Advanced Features (Streach Goals): 
+### Advanced Features (Stretch Goals): 
 1. **Multi-User - Conversation Memory and Session Management**: Each user gets an isolated conversation session; Maintains context across multiple exchanges
 2. **Responsive UI**: Clean, modern Streamlit interface
 3. **Download Chat History**: Users can export their conversation
@@ -37,7 +37,7 @@ The system handles queries for six ShopUNow departments, covering frequently ask
 ## Agentic RAG Architecture
 
 
-![Agentic RAG Architecture](https://i.imgur.com/bLCdxCI.png)
+![Agentic RAG Architecture](https://i.imgur.com/hgxwth4.png)
 
 
 ## Updated Agentic RAG Architecture
