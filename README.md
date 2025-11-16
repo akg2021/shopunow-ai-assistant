@@ -1,52 +1,74 @@
-# ShopUNow AI Assistant - Cloud Deployment  Guide
+# ShopUNow Agentic AI Assistant - Capstone Project
 
-# Build a Customer Support Router Agentic RAG System
+**Project Type:** Hands-on Capstone Project  
+**Organization:** Analytics Vidya  
+**Learner Name:** Arun Goenka
 
-In this project, we will leverage the power of AI Agents and RAG Systems to build an intelligent Router Agentic RAG System to handle customer support queries using a custom knowledgebase.
+## Project Description
 
-![](https://i.imgur.com/bLCdxCI.png)
+This capstone project builds an **Intelligent AI Assistant** for ShopUNow, a retail company. It combines intelligent sentiment detection, query decomposition, and dynamic routing with Retrieval-Augmented Generation (RAG) to efficiently handle diverse user inquiries.The assistant leverages:
+- **Generative AI - OpenAI LLM**
+- **RAG (Retrieval-Augmented Generation) - Chromnadb**
+- **JSON-based Knowledge base**
+- **LangGraph and LangChain for Agents and Routing**
 
-### Intelligent Router Agentic RAG System
+The system handles queries for six ShopUNow departments, covering frequently asked questions by:
+- **External customers** (Products, Shipping & Delivery, Billing & Payment)
+- **Internal employees** (HR, IT Support, Facilities & Administration)
 
-This project focuses on building an **Intelligent Router Agentic RAG System** that combines intelligent query analysis, sentiment detection, and dynamic routing with Retrieval-Augmented Generation (RAG) to handle diverse user inquiries efficiently. The workflow includes the following components:
+### Key Features (Mandatory):
+1. **Six Departments and related queries covered**: 3 External Customers & 3 Internal Employees
+2. **FAQ Datasets - Knowledge Base**: LLM-generated knowledge base for six departments with 25 FAQs for each department
+3. **Vector Database**: Chromadb vector database with department metadata for retrieval
+4. **Router-based Agentic RAG System**: Accepts user query, analyses and decomposes, query, analyses and decomposes and routes queries to HR, IT, Facilities, Products, Billing, or Shipping
+    - **Query Sentiment Analysis**: Detects negative sentiment and escalates appropriately
+    - **Query Decomposition**: Simplifies complex queries related to multiple departments into subqueries linked to individual departments
+    - **Dynamic Multi-Department Routing**: Routing of subqueries to related departments for RAG based responses generation
+    - **Multi-department Response compilation**:  LLM based Responses compilation 
+    - **Human Escalation**: Negative Sentiment or no response for any departments
+5. **Testing of system with sample queries**
 
-1. **Query Categorization and Sentiment Analysis**:
-   - The system uses **OpenAI GPT-4o** to analyze the user's query and determine:
-     - **Query Category**: Identifies the type of problem, such as billing, technical issues, or general queries.
-     - **User Sentiment**: Evaluates the user's sentiment (positive, neutral, or negative) to determine if escalation is needed.
-
-2. **Intelligent Routing**:
-   - Based on the **query_category** and **query_sentiment**, the system routes the query to the appropriate handling node:
-     - **Escalate to Human**: If the sentiment is negative, the query is escalated to a human for resolution.
-     - **Generate Billing Response**: Queries related to billing are routed to generate an appropriate response.
-     - **Generate Technical Response**: Technical queries are routed for a specialized technical response.
-     - **Generate General Response**: General queries are handled with context-aware responses.
-
-3. **Knowledge Base Integration (RAG)**:
-   - The system integrates with a **Knowledge Base (Vector Database)** to augment responses with relevant and accurate information.
-   - Retrieval-Augmented Generation (RAG) ensures that responses are grounded in the latest and most reliable data.
-
-4. **Escalation Mechanism**:
-   - Negative sentiment triggers an **escalation to a human**, ensuring the user receives empathetic and personalized support for critical issues.
+### Advanced Features (Streach Goals): 
+1. **Multi-User - Conversation Memory and Session Management**: Each user gets an isolated conversation session; Maintains context across multiple exchanges
+2. **Responsive UI**: Clean, modern Streamlit interface
+3. **Download Chat History**: Users can export their conversation
 
 
-A multi-department AI chatbot with conversation memory, sentiment analysis, and intelligent routing.
+## Agentic RAG Architecture
 
-## Features
 
-- **Multi-Department Routing**: Automatically routes queries to HR, IT, Facilities, Products, Billing, or Shipping
-- **Conversation Memory**: Maintains context across multiple exchanges
-- **Sentiment Analysis**: Detects negative sentiment and escalates appropriately
-- **Session Management**: Each user gets an isolated conversation session
-- **Download Chat History**: Users can export their conversation
-- **Responsive UI**: Clean, modern Streamlit interface
+![Agentic RAG Architecture](https://i.imgur.com/bLCdxCI.png)
 
+
+## Updated Agentic RAG Architecture
+![Enhanced Agentic RAG Architecture](https://i.imgur.com/10fyrT2.png)
+
+
+## Agent RAG Tools Stack
+ **- LLM GPT-4o**
+ **- LangGraph**
+ **- LangChain**
+ **- Python**
+ **- Chromadb**
+ **- Streamlit (UI)**
+
+ ## Future Enhancements
+
+- [ ] Add user authentication
+- [ ] Implement real email notifications
+- [ ] Add analytics dashboard
+- [ ] Support file uploads
+- [ ] Multi-language support
+- [ ] Voice input/output
+
+
+#########################################################################################################################
 ## Prerequisites
 
 - Python 3.9+
 - OpenAI API key
 - GitHub account
-- Streamlit Cloud account (free tier available)
+- Streamlit Cloud account
 
 ## Local Setup
 
@@ -91,31 +113,20 @@ streamlit run streamlit_app.py
 
 Visit `http://localhost:8501` in your browser.
 
+
 ## Deploy to Streamlit Cloud
 
 ### Step 1: Prepare GitHub Repository
 
 1. Create a new repository on GitHub
-2. Push your code:
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/yourusername/shopunow-ai-assistant.git
-git push -u origin main
-```
+2. Push your code to GitHub
 
 ### Step 2: Deploy on Streamlit Cloud
 
 1. Go to [share.streamlit.io](https://share.streamlit.io)
 2. Click **"New app"**
 3. Connect your GitHub account
-4. Select:
-   - Repository: `yourusername/shopunow-ai-assistant`
-   - Branch: `main`
-   - Main file: `streamlit_app.py`
+4. Select `streamlit_app.py` from `shopunow-ai-assistant` repository
 
 ### Step 3: Configure Secrets
 
@@ -124,11 +135,6 @@ git push -u origin main
 
 ```toml
 OPENAI_API_KEY = "sk-your-actual-openai-key"
-
-# Optional email settings
-ESCALATION_EMAIL = "noreply@shopunow.com"
-SUPPORT_EMAIL = "support@shopunow.com"
-```
 
 3. Click **Save**
 
@@ -146,7 +152,7 @@ shopunow-ai-assistant/
 ├── requirements.txt           # Python dependencies
 ├── README.md                  # This file
 ├── .streamlit/
-│   └── secrets.toml          # Local secrets (DO NOT COMMIT)
+│   └── secrets.toml          # Local secrets
 └── .gitignore                # Git ignore rules
 ```
 
@@ -171,7 +177,7 @@ To add/modify departments, edit the `generate_knowledge_base()` function in `sho
 
 ### Basic Chat
 
-1. Open the app
+1. Open the app - https://appapppy-bdcjpaqyqulyvtcqk95ik2.streamlit.app/
 2. Type your question in the chat input
 3. Press Enter or click Send
 4. Get instant AI-powered responses
@@ -189,151 +195,3 @@ The agent automatically detects and routes multi-department queries:
 2. (Optional) Enter your email
 3. Click **Download History**
 4. Save the TXT file
-
-## Security Notes
-
-- Never commit `.env` or `secrets.toml` files
-- Use environment variables for all sensitive data
-- Streamlit Cloud secrets are encrypted at rest
-- Add `.env` and `secrets.toml` to `.gitignore`
-
-## .gitignore
-
-Create a `.gitignore` file:
-
-```
-# Environment
-.env
-venv/
-env/
-
-# Streamlit
-.streamlit/secrets.toml
-
-# Python
-__pycache__/
-*.py[cod]
-*.so
-.Python
-
-# Database
-*.db
-chroma_db/
-shopunow_kb.json
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-```
-
-## Troubleshooting
-
-### "OPENAI_API_KEY not set"
-
-- **Local**: Check your `.env` file
-- **Cloud**: Verify secrets in Streamlit Cloud dashboard
-
-### "Module not found"
-
-```bash
-pip install -r requirements.txt --upgrade
-```
-
-### App crashes on startup
-
-Check Streamlit Cloud logs:
-1. Go to app dashboard
-2. Click **Manage app**
-3. View **Logs** tab
-
-### Slow first response
-
-The agent initializes on first use (10-30 seconds). Subsequent responses are faster.
-
-## Updates and Maintenance
-
-### Update Code
-
-```bash
-git add .
-git commit -m "Your update message"
-git push origin main
-```
-
-Streamlit Cloud auto-deploys on push.
-
-### Update Dependencies
-
-Edit `requirements.txt`, then:
-
-```bash
-pip install -r requirements.txt --upgrade
-```
-
-Commit and push changes.
-
-## API Reference
-
-### Agent Methods
-
-```python
-from shopunow_agent import get_agent
-
-agent = get_agent()
-agent.initialize()
-
-# Ask a question
-result = agent.ask("What laptops do you have?")
-print(result['response'])
-
-# Start new chat
-session_id = agent.new_chat()
-
-# Get history
-history = agent.get_chat_history(session_id)
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-## License
-
-MIT License - feel free to use for your projects!
-
-## Support
-
-- **Issues**: Open a GitHub issue
-- **Email**: support@shopunow.com
-- **Phone**: 1-800-SHOPUNOW
-
-## Roadmap
-
-- [ ] Add user authentication
-- [ ] Implement real email notifications
-- [ ] Add analytics dashboard
-- [ ] Support file uploads
-- [ ] Multi-language support
-- [ ] Voice input/output
-
-## Performance Tips
-
-1. **First Load**: Agent initializes once per session (~30 seconds)
-2. **Caching**: Knowledge base is cached after first load
-3. **Scaling**: Streamlit Cloud auto-scales based on usage
-4. **Optimization**: Use GPT-4o-mini for faster responses (lower cost)
-
-## Links
-
-- [Streamlit Documentation](https://docs.streamlit.io)
-- [LangChain Documentation](https://python.langchain.com)
-- [OpenAI API Reference](https://platform.openai.com/docs)
-
----
-
-**Built with love by ShopUNow Team**

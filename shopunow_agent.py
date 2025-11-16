@@ -1,6 +1,8 @@
 """
-ShopUNow AI Agent - Cloud-Ready Version
-Optimized for Streamlit Cloud Deployment
+ShopUNow AI Assistant - Capstone Project
+Agentic RAG system for ShopUNow AI Assistant
+Created by Arun Goenka
+for capstone project for Analytics Vidya
 """
 
 import os
@@ -21,7 +23,6 @@ from langgraph.checkpoint.memory import MemorySaver
 import chromadb
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
 # Suppress ChromaDB telemetry
@@ -33,7 +34,7 @@ os.environ['ANONYMIZED_TELEMETRY'] = 'False'
 
 def get_secret(key: str, default: str = "") -> str:
     """Get secret from Streamlit secrets or environment variable."""
-    # Try Streamlit secrets first (for cloud deployment)
+
     try:
         import streamlit as st
         if hasattr(st, 'secrets'):
@@ -41,13 +42,13 @@ def get_secret(key: str, default: str = "") -> str:
                 if key in st.secrets:
                     return st.secrets[key]
             except (AttributeError, KeyError, TypeError):
-                # Secrets file might not exist or key not found - that's okay
+  
                 pass
     except (ImportError, RuntimeError):
-        # Streamlit not available or not in Streamlit context - that's okay
+
         pass
     
-    # Fallback to environment variable (for local development with .env file)
+
     return os.getenv(key, default)
 
 # ============================================================================
@@ -57,7 +58,7 @@ def get_secret(key: str, default: str = "") -> str:
 class Config:
     """Application configuration."""
     
-    # API Keys (loaded from Streamlit secrets or environment)
+    # API Keys
     OPENAI_API_KEY = get_secret("OPENAI_API_KEY", "")
     
     # Email settings (optional)
@@ -406,7 +407,6 @@ Return: is_multi_department (true if >1 sub-query), sub_queries list, explanatio
         
         result = self.llm.with_structured_output(QueryDecomposition).invoke(prompt)
         
-        # Force at least one sub-query if none provided
         if not result.sub_queries:
             result.sub_queries = [
                 SubQuery(question=query, department='Products', priority=1)
@@ -467,44 +467,34 @@ Return: is_multi_department (true if >1 sub-query), sub_queries list, explanatio
                 continue
             
             try:
-                # Use the db to create a new retriever with department filter and lower threshold
-                # First try with filter
+  
                 db_source = self.db
                 if not db_source:
-                    # Fallback: try to get vectorstore from retriever attributes
-                    db_source = getattr(self.retriever, 'vectorstore', None) or getattr(self.retriever, '_vectorstore', None)
+                      db_source = getattr(self.retriever, 'vectorstore', None) or getattr(self.retriever, '_vectorstore', None)
                 
                 if db_source:
-                    # Try with department filter first
                     filtered_retriever = db_source.as_retriever(
                         search_type="similarity_score_threshold",
                         search_kwargs={
-                            "k": 5,  # Increase k to get more results
-                            "score_threshold": 0.1,  # Lower threshold for better recall
+                            "k": 5,  
+                            "score_threshold": 0.1, 
                             "filter": {"department": dept_filter}
                         }
                     )
                     docs = filtered_retriever.invoke(question)
                     
-                    # If no docs found with filter, try without filter but still prioritize department matches
                     if not docs or len(docs) == 0:
-                        # Try with similarity search (no threshold) to get more results
                         fallback_retriever = db_source.as_retriever(
                             search_type="similarity",
                             search_kwargs={"k": 5}
                         )
                         all_docs = fallback_retriever.invoke(question)
-                        # Filter manually to prioritize department matches
                         docs = [doc for doc in all_docs if doc.metadata.get('department') == dept_filter]
-                        # If still no matches, use top results anyway (they might still be relevant)
                         if not docs and all_docs:
                             docs = all_docs[:3]
                 else:
-                    # Fallback: use original retriever but modify search_kwargs temporarily
-                    # Save original search_kwargs
                     original_kwargs = dict(self.retriever.search_kwargs) if hasattr(self.retriever, 'search_kwargs') else {}
                     
-                    # Try with filter
                     try:
                         self.retriever.search_kwargs = {
                             "k": 5,
@@ -514,20 +504,17 @@ Return: is_multi_department (true if >1 sub-query), sub_queries list, explanatio
                         docs = self.retriever.invoke(question)
                     except:
                         docs = []
-                    
-                    # If no docs, try without filter
+
                     if not docs or len(docs) == 0:
                         try:
                             self.retriever.search_kwargs = {"k": 5, "score_threshold": 0.05}
                             all_docs = self.retriever.invoke(question)
-                            # Filter manually
                             docs = [doc for doc in all_docs if doc.metadata.get('department') == dept_filter]
                             if not docs and all_docs:
                                 docs = all_docs[:3]
                         except:
                             docs = []
                     
-                    # Restore original kwargs
                     if original_kwargs:
                         self.retriever.search_kwargs = original_kwargs
                 
@@ -600,7 +587,7 @@ Be concise and informative. If the question asks about delivery time or timeline
         dept_responses = state["department_responses"]
         is_multi = state.get("is_multi_department", False)
         
-        # Sort by priority (for internal processing, but don't show in output)
+        # Sort by priority (for internal processing)
         sorted_responses = sorted(
             dept_responses.items(),
             key=lambda x: x[1].get('priority', 999)
@@ -717,7 +704,7 @@ class ShopUNowAgent:
         if self._initialized:
             return
         
-        # Get API key (from Streamlit secrets or environment)
+        # Get API key
         api_key = get_secret("OPENAI_API_KEY", "")
         if not api_key:
             raise ValueError(
@@ -862,7 +849,7 @@ class ShopUNowAgent:
 
 
 # ============================================================================
-# Module-level instance (singleton pattern)
+# Module-level instance
 # ============================================================================
 
 _agent_instance = None

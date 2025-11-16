@@ -225,10 +225,9 @@ with st.sidebar:
             chat_content += "="*70 + "\n\n"
             
             for i, msg in enumerate(st.session_state.chat_history, 1):
-                role_icon = "👤" if msg['role'] == 'user' else "🤖"
                 role_label = "You" if msg['role'] == 'user' else "Assistant"
                 
-                chat_content += f"[{i}] {role_icon} {role_label}:\n"
+                chat_content += f"[{i}] {role_label}:\n"
                 chat_content += f"{msg['content']}\n"
                 chat_content += "-"*70 + "\n\n"
             
